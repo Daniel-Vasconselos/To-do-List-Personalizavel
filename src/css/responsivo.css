@@ -1,0 +1,127 @@
+/* ===========================
+   RESPONSIVO PARA CELULAR
+=========================== */
+
+@media (max-width: 768px) {
+
+    main{
+        width: 95%;
+        margin: 15px auto;
+        padding: 15px;
+    }
+
+    .cabealho{
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .inputs_cadastro,
+    .input_objetivo,
+    .inputs_lista,
+    .conteudo_inputs_editar{
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .inputs_cadastro input,
+    .input_objetivo input,
+    .inputs_lista input,
+    .conteudo_inputs_editar input{
+        width: 100%;
+    }
+
+    .acoes_cadastro{
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .acoes_cadastro button,
+    .btn_add_categoria button,
+    #btn_voltar_categoria,
+    #btn_img_fundo_categoria,
+    #btn_img_fundo_inicio,
+    #cancelar_edit{
+        width: 100%;
+    }
+
+    .opcoes{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .card_categoria{
+        width: 100%;
+        height: auto;
+        min-height: 170px;
+    }
+
+    .container_tarefa{
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+
+    .container_tarefa p{
+        text-align: center;
+        word-break: break-word;
+    }
+
+    .acoes_tarefa{
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .saudacao h2{
+        font-size: 1.2rem;
+    }
+
+    .saudacao{
+        padding: 0;
+    }
+
+    input,
+    button,
+    select{
+        font-size: 16px; /* evita zoom no iPhone */
+    }
+}
+
+/* ===========================
+   MODAIS RESPONSIVOS
+=========================== */
+
+@media (max-width:768px){
+
+    #modal_imagem_fundo{
+        width: 95%;
+        padding: 15px;
+    }
+
+    .container_fundos{
+        gap: 10px;
+    }
+
+    .card_fundo{
+        width: 100%;
+        max-width: 320px;
+        height: 170px;
+    }
+
+    .img_escolha span{
+        font-size: 60px;
+    }
+
+    #modal_erro{
+        width: 90%;
+    }
+
+    #modal_erro h1{
+        font-size: 1.5rem;
+    }
+
+    #modal_erro h2{
+        font-size: 1rem;
+    }
+}

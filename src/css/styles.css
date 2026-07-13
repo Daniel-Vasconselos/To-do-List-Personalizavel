@@ -1,0 +1,211 @@
+.cabealho{
+    display: flex;
+    align-items: center;
+}
+
+.saudacao{
+    text-align: center;
+    padding: 0 1rem 1rem;
+}
+
+.subtitulo_cadastro{
+    display: block;
+    text-align: center;
+    padding: 0 1rem 1rem;
+}
+
+.inputs_cadastro{
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+
+.div_area_selecionada{
+    margin-bottom: 20px;
+}
+
+.input_objetivo{
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.input_desafios > p,
+.inputs_cadastro > p,
+.div_area_selecionada > p,
+.input_objetivo > p,
+.input_prazo > p,
+.conteudo_inputs_editar > p{
+    font-weight: bold;
+}
+
+.opcoes{
+    display: grid;
+    margin: 10px 0px 15px 0px;
+    gap: 0px 20px;
+}
+
+.opcao{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.acoes_cadastro{
+    display: flex;
+    justify-content: space-around;
+}
+
+.classe_btn_voltar{
+    display: block;
+}
+
+#btn_img_fundo_inicio,
+#btn_voltar_categoria,
+#cancelar_edit{
+    margin: auto;
+}
+
+.btn_add_categoria{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.classe_btn_voltar.oculto,
+.subtitulo_cadastro.oculto,
+.section_cadastro.oculto,
+.div_lista.oculto{
+    display: none;
+}
+
+.primeiro_acesso.visivel,
+.section_categoria.visivel,
+.section_lista.visivel,
+.div_edit_tarefa.visivel{
+    display: block;
+}
+
+.primeiro_acesso{
+    display: none;
+    margin-bottom: 10px;
+}
+
+.section_cadastro,
+.div_lista{
+    display: block;
+}
+
+.section_categoria,
+.section_lista,
+.div_edit_tarefa{
+    display: none;
+}
+
+.add_catergoria{
+    margin: 10px 0px;
+}
+
+.container_categoria{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.card_categoria{
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    cursor: pointer;
+    gap: 5px;
+    padding: 15px;
+    width: 400px;
+    height: 150px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 10px;
+}
+
+.btn_remover_categoria{
+    background-color: transparent;
+    border: none;
+    font-size: 2.0rem;
+}
+
+button.btn_remover_categoria > i{
+    color: #fff;
+}
+
+button.btn_remover_categoria:hover > i{
+    color: #395169;
+    background-color: transparent;
+}
+
+.btn_remover_categoria:hover{
+    background-color: transparent;
+}
+
+.info_card_categoria{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    color: white;
+    text-shadow: 2px 2px black;
+}
+
+.inputs_lista{
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.container_lista_tarefas{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;justify-content: center;
+    margin-bottom: 20px;
+}
+
+.container_tarefa{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+    border-radius: 10px;
+    transition: .3s;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.acoes_tarefa{
+    display: flex;
+    gap: 15px;
+}
+
+.conteudo_inputs_editar{
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.finalizado{
+    background-color: #395169;
+}
+
+.finalizado p{
+    color: #fff;
+    text-decoration: line-through;
+}
+
+

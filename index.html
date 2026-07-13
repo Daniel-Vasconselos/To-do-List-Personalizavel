@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-do List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="src/css/base.css">
+    <link rel="stylesheet" href="src/css/styles.css">
+    <link rel="stylesheet" href="src/css/modal.css">
+    <link rel="stylesheet" href="src/css/responsivo.css">
+
+    <link rel="icon" type="image/png" sizes="32x32" href="src/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="src/favicon/favicon-16x16.png">
+    <link rel="shortcut icon" href="src/favicon/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="src/favicon/apple-touch-icon.png">
+    <script src="src/js/scripts.js" defer></script>
+</head>
+<body>
+    <main>
+        <section class="section_cadastro">
+            <div class="primeiro_acesso">
+                <div>
+                    <div class="saudacao">
+                        <h2>Ola seja bem vindo!</h2>
+                        <h2>Esta é sua lista de ortganização inteligente</h2>
+                    </div>
+                    <div class="inputs_cadastro">
+                        <p>Como posso te chamar?</p>
+                        <input type="text" id="nome_usuario">
+                    </div>
+                </div>
+                <div class="input_desafios">
+                    <p>Qual seu principal desafio?</p>
+                    <div class="opcoes">
+                        <div class="opcao">
+                            <input type="radio" value="falta de organização" name="desafio" id="organizacao">
+                            <label for="organizacao">Falta de organização</label>
+                        </div>
+                        <div class="opcao">
+                            <input type="radio" value="procrastinação" name="desafio" id="procrastinacao">
+                            <label for="procrastinacao">Procrastinação</label>
+                        </div>
+                        <div class="opcao">
+                            <input type="radio" value="esquecimento" name="desafio" id="esquecimento">
+                            <label for="esquecimento">Esquecimento</label>
+                        </div>
+                        <div class="opcao">
+                            <input type="radio" value="falta de tempo" name="desafio" id="tempo">
+                            <label for="tempo">Falta de tempo</label>
+                        </div>
+                        <div class="opcao">
+                            <input type="radio" value="excesso de tarefas" name="desafio" id="tarefas">
+                            <label for="tarefas">Excesso de tarefas</label>
+                        </div>
+                    </div>
+                </div>
+                <button id="btn_img_fundo_inicio">Escolha um plano de fundo</button>
+            </div> 
+            <div class="criar_categoria">
+                <div class="subtitulo_cadastro">
+                    <h2>Cadastrar nova categoria.</h2>
+                </div>
+                <div class="div_area_selecionada">
+                    <p>Area de interesse:</p>
+                    <div class="opcoes">
+                        <div class="opcao">
+                            <input type="radio" value="Estudos" name="interesse" id="estudos">
+                            <label for="estudos">Estudos</label>
+                        </div>
+                        <div class="opcao">
+                            <input type="radio" value="Compras" name="interesse" id="compras">
+                            <label for="compras">Compras</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input_objetivo">
+                    <p>Objetivo:</p>
+                    <input type="text" id="objetivo">
+                </div>
+                <div class="input_prazo">
+                    <p>Prazo:</p>
+                    <div class="opcoes">
+                        <div>
+                            <input type="radio" value="curto" name="periodo" id="curto">
+                            <label for="curto">Curto Prazo</label>
+                        </div>
+                        <div>
+                            <input type="radio" value="medio" name="periodo" id="medio">
+                            <label for="medio">Medio Prazo</label>
+                        </div>
+                        <div>
+                             <input type="radio" value="longo" name="periodo" id="longo">
+                            <label for="longo">Longo Prazo</label>
+                        </div>   
+                    </div>  
+                </div>
+                <div class="acoes_cadastro">
+                    <button id="btn_cadastrar">Cadastrar</button>
+                    <button class="classe_btn_voltar" id="id_btn_voltar">Voltar</button>
+                </div>
+            </div>
+        </section>
+        <section class="section_categoria">
+            <div class="cabealho">
+                <div class="saudacao">
+                    <h2>Ola <span id="span_nome_usuario"></span>!</h2>
+                    <h2>Em qual categoria iremos mexer hoje?</h2>
+                </div>
+                <div class="acoes_categoria">
+                    <button id="btn_img_fundo_categoria">
+                        <i class="fa-solid fa-palette"></i>
+                        Personalizar tema
+                    </button>
+                </div>
+            </div>
+            <div class="btn_add_categoria">
+                <button id="add_catergoria" class="add_catergoria">Cadastrar nova categoria</button>
+            </div>
+            <div class="container_categoria"></div>
+        </section>
+        <section class="section_lista">
+            <div class="saudacao">
+                <h2>Objetivo selecionado: <span id="span_objetivo_selecionado"></span>!</h2>
+            </div>
+            <div class="div_lista">
+                <div class="inputs_lista">
+                    <label for="tarefa">Adicione sua tarefa:</label>
+                    <input type="text" name="tarefa" id="tarefa">
+                    <button id="add_tarefa">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+                <div class="container_lista_tarefas"></div>
+                <button id="btn_voltar_categoria">Voltar</button>
+            </div>
+            <div class="div_edit_tarefa">
+                <div class="conteudo_inputs_editar">
+                    <p>Edite a sua tarefa:</p>
+                    <input type="text" id="input_edit">
+                    <button id="concluir_edicao">
+                        <i class="fa-solid fa-check-double"></i>
+                    </button>
+                </div>
+                <button id="cancelar_edit">Cancelar</button>
+            </div>
+        </section>
+    </main>
+    <dialog id="modal_erro">
+        <h1>ERRO</h1>
+        <h2>Preencha todos os campos corretamente!</h2>
+        <button id="btn_fechar_modal_erro">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </dialog>
+    
+    <dialog id="modal_imagem_fundo">
+        <h2>Escolha um plano de fundo</h2>
+        <div class="container_fundos"></div>
+        <button id="btn_fechar_modal_img">Fechar</button>
+    </dialog>
+
+    <input type="file" id="input_fundo" accept="image/*" style="display:none">
+</body>
+</html>

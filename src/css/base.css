@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+*:not(dialog){
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body{
+    background-color: rgb(74,144,161);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    transition: background-image .4s;
+}
+
+button{
+    background-color: #fdfdfd;
+    color: #102f5e;
+    border: 2px solid #102f5e;
+    padding: 0.3rem 0.6rem;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.4s;
+}
+
+button:hover{
+    background-color: #102f5e;
+    color: #fff;
+}
+
+button:hover > i{
+    color: #fff;
+}
+
+button i{
+color: navy;
+font-weight: bold;
+pointer-events: none;
+}
+
+input, select{
+    padding: 0.25rem 0.5rem;
+}
+
+main{
+    width: 95%;
+    max-width: 600px;
+    margin: 3rem auto ;
+    background-color: #fdfdfd;
+    padding: 1.5rem;
+    border-radius: 15px;
+}
+
+dialog::backdrop{
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+dialog > button{
+    margin: auto;
+}
