@@ -30,7 +30,6 @@ const categoriasFundo = [
     }
 ];
 
-
 const section_cadastro = document.querySelector(".section_cadastro");
 const section_categoria = document.querySelector(".section_categoria");
 const section_lista = document.querySelector(".section_lista");
@@ -69,6 +68,11 @@ let categorias_salvas = JSON.parse(localStorage.getItem("categorias_salvas")) ||
 let categoria_selecionada = null
 let indice_tarefa = null
 let fundosCarregados = false;
+let data = null
+let dia = ""
+let mes = ""
+let ano = ""
+let data_atual = ""
 
 // -----------------------------------------------------Açoes da pagina-----------------------------------------------------------
 // Ação ao recarregar a pagina
@@ -116,13 +120,26 @@ btn_cadastrar.addEventListener('click', () =>{
     }
 
     if(!area_selecionada || !prazo_selecionado || objetivo.value.trim() === ""){
-        console.log("erro");
+        abrir_modal_erro()
     } else {
+        let valor_duracao = 0
+        if(prazo_selecionado.value === "imediato"){
+            valor_duracao = 24.00
+        }else if (prazo_selecionado.value === "curto"){
+            valor_duracao = 7
+        } else if(prazo_selecionado.value === "medio"){
+            valor_duracao = 30
+        } else {
+            valor_duracao = 365
+        }
+
         let categoria = {
         id_card: `card${categorias_salvas.length + 1}-${area_selecionada.value}`,
         area_interesse: area_selecionada.value,
         objetivo: objetivo.value.trim(),
         prazo: prazo_selecionado.value,
+        data_salva: new Date,
+        duracao: valor_duracao,
         tarefas: []
         };
         categorias_salvas.push(categoria);
@@ -168,7 +185,7 @@ btn_add_tarefa.addEventListener("click", () => {
             if(item.objetivo === span_objetivo_selecionado.textContent){
                 container_lista_tarefas.innerHTML = "";
                 if(tarefa_digitada.value.trim() === ""){
-                    console.log("erro");                    
+                    abrir_modal_erro()                    
                 } else {
                     item.tarefas.push({
                         id: crypto.randomUUID(),
@@ -190,7 +207,7 @@ btn_cancelasr_edit.addEventListener('click', fechar_aba_edit)
 //Botão para concluir a edição da tarefa
 btn_concluir_edicao.addEventListener('click', () => {
     if(input_edit.value.trim() === ""){
-        console.log("erro");
+        abrir_modal_erro()
     } else {
         let tarefa_editada = input_edit.value.trim()
         categoria_selecionada.tarefas.forEach(tarefa =>{
@@ -217,10 +234,56 @@ btn_fechar_modal_img.addEventListener('click', () =>{
 })
 
 // -----------------------------------------------------Funções da pagina----------------------------------------------------------- 
+//Função para atualizar a data e a hora atual
+function atualizar_data(){
+    data = new Date()
+    dia = data.getDate()
+    mes = data.getMonth() + 1
+    ano = data.getFullYear()
+    data_atual = `${dia}/${mes}/${ano}`
+}
+
 //Cria a Lista com as Categorias criadas
 function criar_sub_categoria(){
-    container_categoria.innerHTML = "";
+    container_categoria.innerHTML = "";    
+    atualizar_data()
+
+    categorias_salvas = categorias_salvas.filter(item => {
+        if(item.prazo === "imediato"){
+            const criado = new Date(item.data_salva);
+            const agora = new Date();
+    
+            if(agora - criado >= 24 * 60 * 60 * 1000){
+                return false;
+            }
+        } else {
+            if(item.duracao <= 0){
+                return false;
+            }
+        }
+        return true
+    })
+
+    localStorage.setItem("categorias_salvas", JSON.stringify(categorias_salvas));
+
     categorias_salvas.forEach(item => {
+        let unidade_prazo = ""
+        if(item.prazo === "imediato"){
+            let expiracao = new Date(item.data_salva)
+            expiracao.setHours(expiracao.getHours()+24)
+            const agora = new Date()
+            const diferenca = expiracao - agora;
+            const horas = Math.floor(diferenca/(1000*60*60))
+            const minutos = Math.floor((diferenca % (1000*60*60))/(1000*60))
+            item.duracao = `${horas}h ${minutos}min`
+        } else {
+            unidade_prazo = "dias"
+            if(item.data_salva !== data_atual){
+                item.duracao -= 1
+                item.data_salva = data_atual
+            }
+        }
+
         const card_categoria = document.createElement("div");
         card_categoria.classList.add("card_categoria");
 
@@ -239,8 +302,14 @@ function criar_sub_categoria(){
         prazo_categoria.innerText = `Prazo: ${item.prazo}`;
         info_card_categoria.appendChild(prazo_categoria);
 
+        const contagem_temino_atividade = document.createElement("p");
+        contagem_temino_atividade.innerHTML = `Expira em <span>${item.duracao}</span> ${unidade_prazo}.`
+        info_card_categoria.appendChild(contagem_temino_atividade)
+
         card_categoria.appendChild(info_card_categoria)
+        container_categoria.appendChild(card_categoria)
         
+        //Botão de excluir a categoria
         const remover_categoria = document.createElement("div");
         remover_categoria.classList.add("remover_categoria")
 
@@ -254,13 +323,13 @@ function criar_sub_categoria(){
         });  
         
         remover_categoria.appendChild(btn_remover_categoria)
-            
         card_categoria.appendChild(remover_categoria)
-        container_categoria.appendChild(card_categoria)
-
+    
+        //colocar a imagem no card
         const categoria = categoriasAPI[item.area_interesse]
         conectar_API(categoria, card_categoria)
 
+        //Abri o card da categoria
         card_categoria.addEventListener("click", () => {
             abrir_aba_lista(item)
         })
@@ -332,7 +401,7 @@ function atualizarLista(item){
     });
 }
     
-//Função para identificare qual tarefa foi selecionada
+//Função para identificar qual tarefa foi selecionada
 document.addEventListener("click", (elemento) => {
     const elemento_alvo = elemento.target
     const elemento_pai = elemento_alvo.closest("div")

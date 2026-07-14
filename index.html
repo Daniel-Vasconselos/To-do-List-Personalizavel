@@ -83,16 +83,20 @@
                     <p>Prazo:</p>
                     <div class="opcoes">
                         <div>
+                            <input type="radio" value="imediato" name="periodo" id="imediato">
+                            <label for="imediato">Categoria diária</label>
+                        </div>
+                        <div>
                             <input type="radio" value="curto" name="periodo" id="curto">
-                            <label for="curto">Curto Prazo</label>
+                            <label for="curto">Curto prazo (1 semana)</label>
                         </div>
                         <div>
                             <input type="radio" value="medio" name="periodo" id="medio">
-                            <label for="medio">Medio Prazo</label>
+                            <label for="medio">Médio prazo (1 mês)</label>
                         </div>
                         <div>
                              <input type="radio" value="longo" name="periodo" id="longo">
-                            <label for="longo">Longo Prazo</label>
+                            <label for="longo">Longo prazo (1 ano)</label>
                         </div>   
                     </div>  
                 </div>
@@ -150,9 +154,7 @@
     <dialog id="modal_erro">
         <h1>ERRO</h1>
         <h2>Preencha todos os campos corretamente!</h2>
-        <button id="btn_fechar_modal_erro">
-            <i class="fa-solid fa-xmark"></i>
-        </button>
+        <button id="btn_fechar_modal_erro">OK</button>
     </dialog>
     
     <dialog id="modal_imagem_fundo">
