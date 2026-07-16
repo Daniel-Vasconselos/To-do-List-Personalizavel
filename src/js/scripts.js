@@ -32,11 +32,13 @@ const categoriasFundo = [
 
 const section_cadastro = document.querySelector(".section_cadastro");
 const section_categoria = document.querySelector(".section_categoria");
+const section_historico = document.querySelector(".section_historico")
 const section_lista = document.querySelector(".section_lista");
 const div_primeiro_acesso = document.querySelector(".primeiro_acesso")
 const div_lista = document.querySelector(".div_lista")
 const div_edit_tarefa = document.querySelector(".div_edit_tarefa")
 const container_categoria = document.querySelector(".container_categoria");
+const container_historico = document.querySelector('.container_historico')
 const container_lista_tarefas = document.querySelector(".container_lista_tarefas")
 const subtitulo_cadastro = document.querySelector(".subtitulo_cadastro")
 const classe_btn_voltar = document.querySelector(".classe_btn_voltar")
@@ -52,11 +54,13 @@ const span_objetivo_selecionado = document.querySelector("#span_objetivo_selecio
 
 const btn_cadastrar = document.querySelector("#btn_cadastrar");
 const btn_add_catergoria = document.querySelector("#add_catergoria");
+const btn_historico = document.querySelector("#historico_categorias");
 const btn_voltar_categoria = document.querySelector("#btn_voltar_categoria");
 const btn_add_tarefa = document.querySelector("#add_tarefa");
 const btn_cancelasr_edit = document.querySelector("#cancelar_edit")
 const btn_concluir_edicao = document.querySelector("#concluir_edicao")
 const id_btn_voltar = document.querySelector("#id_btn_voltar")
+const id_btn_voltar_categoria = document.querySelector("#id_btn_voltar_categoria")
 const btn_fechar_modal_erro= document.querySelector("#btn_fechar_modal_erro")
 const btn_fechar_modal_img= document.querySelector("#btn_fechar_modal_img")
 const btn_img_fundo_inicio = document.querySelector("#btn_img_fundo_inicio");
@@ -65,6 +69,7 @@ const inputFundo = document.querySelector("#input_fundo");
 
 let cadastro = JSON.parse(localStorage.getItem("cadastro")) || {};
 let categorias_salvas = JSON.parse(localStorage.getItem("categorias_salvas")) || [];
+let categorias_expiradas = JSON.parse(localStorage.getItem("categorias_expiradas")) || [];
 let categoria_selecionada = null
 let indice_tarefa = null
 let fundosCarregados = false;
@@ -138,7 +143,7 @@ btn_cadastrar.addEventListener('click', () =>{
         area_interesse: area_selecionada.value,
         objetivo: objetivo.value.trim(),
         prazo: prazo_selecionado.value,
-        data_salva: new Date,
+        data_salva: new Date(),
         duracao: valor_duracao,
         tarefas: []
         };
@@ -171,12 +176,24 @@ btn_add_catergoria.addEventListener('click', () =>{
 //Botão para voltar para aba de categoria 
 btn_voltar_categoria.addEventListener('click', () => {
     section_categoria.classList.add("visivel");
-    section_lista.classList.remove("visivel");
+    section_lista.classList.remove("visivel");    
 })
 
 id_btn_voltar.addEventListener('click', () =>{
     section_cadastro.classList.add("oculto");
     section_categoria.classList.add("visivel");
+})
+
+id_btn_voltar_categoria.addEventListener('click', () => {
+    section_historico.classList.remove("visivel")
+    section_categoria.classList.add("visivel");
+})
+
+//Botão para abrir a seção de histórico
+btn_historico.addEventListener('click', () => {
+    section_categoria.classList.remove("visivel");
+    section_historico.classList.add("visivel")
+    mostrar_categorias_expirados()
 })
 
 //Botão para adicionar as tarefas
@@ -243,45 +260,69 @@ function atualizar_data(){
     data_atual = `${dia}/${mes}/${ano}`
 }
 
-//Cria a Lista com as Categorias criadas
-function criar_sub_categoria(){
-    container_categoria.innerHTML = "";    
-    atualizar_data()
-
-    categorias_salvas = categorias_salvas.filter(item => {
-        if(item.prazo === "imediato"){
+//Fnção para realizar a troca dos dias
+function atualizar_prazos(lista){
+    // Prazo imediato (24 horas)
+    lista = lista.filter(item =>{
+        if (item.prazo === "imediato") {
             const criado = new Date(item.data_salva);
             const agora = new Date();
-    
-            if(agora - criado >= 24 * 60 * 60 * 1000){
-                return false;
+            const expiracao = new Date(criado);
+            expiracao.setHours(expiracao.getHours() + 24);
+            const diferenca = expiracao - agora;
+            if (diferenca <= 0) {
+                if (!categorias_expiradas.some(c => c.id_card === item.id_card)) {
+                    categorias_expiradas.push(item);
+                }
+                return false; // remove da lista categorias_salvas
             }
-        } else {
-            if(item.duracao <= 0){
-                return false;
+
+            const horas = Math.floor(diferenca / (1000 * 60 * 60));
+            const minutos = Math.floor((diferenca % (1000 * 60 * 60)) / (1000 * 60));
+            item.duracao = `${horas}h ${minutos}min`;
+            return true;
+        }
+
+        // Prazo em dias
+        const ultimaAtualizacao = new Date(item.data_salva);
+        const hoje = new Date;
+        
+        ultimaAtualizacao.setHours(0,0,0,0);
+        hoje.setHours(0,0,0,0);
+
+        const diasPassados = Math.floor((hoje - ultimaAtualizacao) / (1000 * 60 * 60 * 24));
+        
+        if (diasPassados > 0) {
+            item.duracao -= diasPassados;
+            item.data_salva = new Date().toISOString();;
+        }
+        if(item.duracao <= 0){
+            if (!categorias_expiradas.some(c => c.id_card === item.id_card)) {
+                categorias_expiradas.push(item);
             }
+            return false
         }
         return true
     })
 
-    localStorage.setItem("categorias_salvas", JSON.stringify(categorias_salvas));
+    localStorage.setItem("categorias_salvas",JSON.stringify(lista));
+    localStorage.setItem("categorias_expiradas", JSON.stringify(categorias_expiradas))
+
+    return lista
+}
+
+//Cria a Lista com as Categorias criadas
+function criar_sub_categoria() {
+    container_categoria.innerHTML = "";
+    atualizar_data();
+    
+
+    categorias_salvas = atualizar_prazos(categorias_salvas);
 
     categorias_salvas.forEach(item => {
-        let unidade_prazo = ""
-        if(item.prazo === "imediato"){
-            let expiracao = new Date(item.data_salva)
-            expiracao.setHours(expiracao.getHours()+24)
-            const agora = new Date()
-            const diferenca = expiracao - agora;
-            const horas = Math.floor(diferenca/(1000*60*60))
-            const minutos = Math.floor((diferenca % (1000*60*60))/(1000*60))
-            item.duracao = `${horas}h ${minutos}min`
-        } else {
-            unidade_prazo = "dias"
-            if(item.data_salva !== data_atual){
-                item.duracao -= 1
-                item.data_salva = data_atual
-            }
+        let unidade_prazo = "";
+        if (item.prazo !== "imediato") {
+            unidade_prazo = "dias";
         }
 
         const card_categoria = document.createElement("div");
@@ -303,36 +344,38 @@ function criar_sub_categoria(){
         info_card_categoria.appendChild(prazo_categoria);
 
         const contagem_temino_atividade = document.createElement("p");
-        contagem_temino_atividade.innerHTML = `Expira em <span>${item.duracao}</span> ${unidade_prazo}.`
-        info_card_categoria.appendChild(contagem_temino_atividade)
+        contagem_temino_atividade.innerHTML =
+            `Expira em <span>${item.duracao}</span> ${unidade_prazo}.`;
+        info_card_categoria.appendChild(contagem_temino_atividade);
 
-        card_categoria.appendChild(info_card_categoria)
-        container_categoria.appendChild(card_categoria)
-        
-        //Botão de excluir a categoria
+        card_categoria.appendChild(info_card_categoria);
+        container_categoria.appendChild(card_categoria);
+
+        // Botão de excluir
         const remover_categoria = document.createElement("div");
-        remover_categoria.classList.add("remover_categoria")
+        remover_categoria.classList.add("remover_categoria");
 
-        const btn_remover_categoria = document.createElement("button")
-        btn_remover_categoria.classList.add("btn_remover_categoria")
-        btn_remover_categoria.innerHTML = '<i class="fa-solid fa-trash"></i>'
+        const btn_remover_categoria = document.createElement("button");
+        btn_remover_categoria.classList.add("btn_remover_categoria");
+        btn_remover_categoria.innerHTML = '<i class="fa-solid fa-trash"></i>';
 
         btn_remover_categoria.addEventListener("click", (event) => {
             event.stopPropagation();
             acao_remover_categoria(item);
-        });  
-        
-        remover_categoria.appendChild(btn_remover_categoria)
-        card_categoria.appendChild(remover_categoria)
-    
-        //colocar a imagem no card
-        const categoria = categoriasAPI[item.area_interesse]
-        conectar_API(categoria, card_categoria)
+        });
 
-        //Abri o card da categoria
+        remover_categoria.appendChild(btn_remover_categoria);
+        card_categoria.appendChild(remover_categoria);
+
+        // Imagem
+        const categoria = categoriasAPI[item.area_interesse];
+        conectar_API(categoria, card_categoria);
+
+        // Abrir categoria
         card_categoria.addEventListener("click", () => {
-            abrir_aba_lista(item)
-        })
+            abrir_aba_lista(item);
+        });
+
     });
 }
 
@@ -532,3 +575,63 @@ inputFundo.addEventListener("change", function(){
     }
     leitor.readAsDataURL(arquivo);
 });
+
+//Função mostrar a lista de expirados
+function mostrar_categorias_expirados(){
+    container_historico.innerHTML = ""
+
+    let total = 0
+    let completas = 0
+    categorias_expiradas.forEach(categoria => {
+
+        const card_categoria_expirada = document.createElement("div")
+        card_categoria_expirada.classList.add("card_categoria_expirada")
+
+        const cabecalho_categoria_expirada = document.createElement("div")
+        cabecalho_categoria_expirada.classList.add("cabecalho_categoria_expirada")
+
+        const titulo = document.createElement("h3")
+        titulo.innerText = `Categoria: ${categoria.area_interesse}`
+        cabecalho_categoria_expirada.appendChild(titulo)
+
+        const objetivo = document.createElement("p")
+        objetivo.innerText = `Objetivo: ${categoria.objetivo}`
+        cabecalho_categoria_expirada.appendChild(objetivo)
+
+        const totais_categoria_expirada = document.createElement("div")
+        totais_categoria_expirada.classList.add("totais_categoria_expirada")
+
+        const lista_tarefa_expirado = document.createElement("div")
+        lista_tarefa_expirado.classList.add("lista_tarefa_expirado")
+
+        total = categoria.tarefas.length
+        categoria.tarefas.forEach(tarefa => {
+            const titulo_tarefa = document.createElement("p");
+            titulo_tarefa.classList.add("titulo_tarefa")
+            titulo_tarefa.innerText = tarefa.nome;
+            lista_tarefa_expirado.appendChild(titulo_tarefa);
+
+            if(tarefa.concluida){
+                completas ++
+                titulo_tarefa.classList.add("finalizado")
+            }
+        })
+
+        const tot_tarefas = document.createElement("p")
+        tot_tarefas.innerText = `Tarefas cadastradas: ${total}`
+        totais_categoria_expirada.appendChild(tot_tarefas)
+
+        const tot_completas = document.createElement("p")
+        tot_completas.innerText = `Completas: ${completas}`
+        totais_categoria_expirada.appendChild(tot_completas)
+
+        const tot_incompletas = document.createElement("p")
+        tot_incompletas.innerText = `Incompletas: ${total-completas}`
+        totais_categoria_expirada.appendChild(tot_incompletas)
+
+        cabecalho_categoria_expirada.appendChild(totais_categoria_expirada)
+        card_categoria_expirada.appendChild(cabecalho_categoria_expirada)
+        card_categoria_expirada.appendChild(lista_tarefa_expirado)
+        container_historico.appendChild(card_categoria_expirada)
+    })   
+}

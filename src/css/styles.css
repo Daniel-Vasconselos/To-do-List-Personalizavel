@@ -72,7 +72,7 @@
 .btn_add_categoria{
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     margin-bottom: 16px;
 }
 
@@ -86,7 +86,8 @@
 .primeiro_acesso.visivel,
 .section_categoria.visivel,
 .section_lista.visivel,
-.div_edit_tarefa.visivel{
+.div_edit_tarefa.visivel,
+.section_historico.visivel{
     display: block;
 }
 
@@ -101,6 +102,7 @@
 }
 
 .section_categoria,
+.section_historico,
 .section_lista,
 .div_edit_tarefa{
     display: none;
@@ -210,6 +212,51 @@ button.btn_remover_categoria:hover > i{
 .finalizado p{
     color: #fff;
     text-decoration: line-through;
+}
+
+.titulo_tarefa{
+    text-align: center;
+    border-radius: 5px;
+}
+
+.titulo_tarefa.finalizado{
+    background-color: #395169;
+    color: #fff;
+    text-decoration: line-through;
+}
+
+#id_btn_voltar_categoria{
+    margin: auto;
+}
+
+.card_categoria_expirada{
+    background-color: darkgrey;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.cabecalho_categoria_expirada{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+    color: #fff;
+    text-shadow: 2px 2px black;
+}
+
+.totais_categoria_expirada{
+    display: flex;
+    justify-content: space-between;
+}
+
+.lista_tarefa_expirado{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #fff;
 }
 
 
