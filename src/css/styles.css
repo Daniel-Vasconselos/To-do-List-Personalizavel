@@ -252,7 +252,7 @@ button.btn_remover_categoria:hover > i{
 .totais_categoria_expirada{
     display: flex;
     justify-content: center;
-    gap: 40px;
+    gap: 30px;
 }
 
 .lista_tarefa_expirado{
