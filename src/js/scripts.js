@@ -587,8 +587,6 @@ inputFundo.addEventListener("change", function(){
 //Função mostrar a lista de expirados
 function mostrar_categorias_expirados(){
     container_historico.innerHTML = ""
-    let total = 0
-    let completas = 0
 
     if(categorias_expiradas.length === 0){
 
@@ -599,6 +597,8 @@ function mostrar_categorias_expirados(){
 
     } else {
         categorias_expiradas.forEach(categoria => {
+            let total = 0
+            let completas = 0
 
             const card_categoria_expirada = document.createElement("div")
             card_categoria_expirada.classList.add("card_categoria_expirada")
