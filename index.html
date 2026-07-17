@@ -86,7 +86,7 @@
                     <div class="opcoes">
                         <div>
                             <input type="radio" value="imediato" name="periodo" id="imediato">
-                            <label for="imediato">Categoria diária</label>
+                            <label for="imediato">24 Horas</label>
                         </div>
                         <div>
                             <input type="radio" value="curto" name="periodo" id="curto">
@@ -157,8 +157,26 @@
              <div class="saudacao">
                 <h2>Histórico das Categorias </h2>
             </div>
+            <div class="container_legenda">
+                <h3 class="titulo_legenda">Legenda</h3>
+                <div class="legenda">
+                    <div class="tarefa_completa">
+                        <p>Tarefa completa</p>
+                        <div class="legenda_tarefa_completa">Tarefa</div>
+                    </div>
+                    <div class="tarefa_incompleta">
+                        <p>Tarefa incompleta</p>
+                        <div>Tarefa</div>
+                    </div>
+                </div>
+            </div>
+            <h2 class="subtitulo_historico">Tarefas Expiradas</h2>
             <div class="container_historico"></div>
-            <button class="classe_btn_voltar" id="id_btn_voltar_categoria">Voltar</button>
+            <div class="acoes_historico">
+                <button class="classe_btn_voltar" id="id_btn_voltar_categoria">Voltar</button>
+                <button id="btn_limpar_historico">Limpar Histórico</button>
+            </div>
+            
         </section>
     </main>
     <dialog id="modal_erro">

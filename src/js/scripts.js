@@ -55,6 +55,7 @@ const span_objetivo_selecionado = document.querySelector("#span_objetivo_selecio
 const btn_cadastrar = document.querySelector("#btn_cadastrar");
 const btn_add_catergoria = document.querySelector("#add_catergoria");
 const btn_historico = document.querySelector("#historico_categorias");
+const btn_limpar_historico = document.querySelector("#btn_limpar_historico")
 const btn_voltar_categoria = document.querySelector("#btn_voltar_categoria");
 const btn_add_tarefa = document.querySelector("#add_tarefa");
 const btn_cancelasr_edit = document.querySelector("#cancelar_edit")
@@ -248,6 +249,13 @@ btn_fechar_modal_erro.addEventListener('click', () =>{
 btn_fechar_modal_img.addEventListener('click', () =>{
     const modal = document.getElementById("modal_imagem_fundo")
     modal.close()
+})
+
+//Botão para limpar o historico
+btn_limpar_historico.addEventListener('click', () => {
+    categorias_expiradas = []
+    localStorage.setItem("categorias_expiradas", JSON.stringify(categorias_expiradas))
+    mostrar_categorias_expirados()
 })
 
 // -----------------------------------------------------Funções da pagina----------------------------------------------------------- 
@@ -579,59 +587,69 @@ inputFundo.addEventListener("change", function(){
 //Função mostrar a lista de expirados
 function mostrar_categorias_expirados(){
     container_historico.innerHTML = ""
-
     let total = 0
     let completas = 0
-    categorias_expiradas.forEach(categoria => {
 
-        const card_categoria_expirada = document.createElement("div")
-        card_categoria_expirada.classList.add("card_categoria_expirada")
+    if(categorias_expiradas.length === 0){
 
-        const cabecalho_categoria_expirada = document.createElement("div")
-        cabecalho_categoria_expirada.classList.add("cabecalho_categoria_expirada")
+        const historico_vazio = document.createElement("p")
+        historico_vazio.classList.add("historico_vazio")
+        historico_vazio.innerText = "Não há nenhuma categoria expirada"
+        container_historico.appendChild(historico_vazio)
 
-        const titulo = document.createElement("h3")
-        titulo.innerText = `Categoria: ${categoria.area_interesse}`
-        cabecalho_categoria_expirada.appendChild(titulo)
+    } else {
+        categorias_expiradas.forEach(categoria => {
 
-        const objetivo = document.createElement("p")
-        objetivo.innerText = `Objetivo: ${categoria.objetivo}`
-        cabecalho_categoria_expirada.appendChild(objetivo)
+            const card_categoria_expirada = document.createElement("div")
+            card_categoria_expirada.classList.add("card_categoria_expirada")
 
-        const totais_categoria_expirada = document.createElement("div")
-        totais_categoria_expirada.classList.add("totais_categoria_expirada")
+            const cabecalho_categoria_expirada = document.createElement("div")
+            cabecalho_categoria_expirada.classList.add("cabecalho_categoria_expirada")
 
-        const lista_tarefa_expirado = document.createElement("div")
-        lista_tarefa_expirado.classList.add("lista_tarefa_expirado")
+            const titulo = document.createElement("h3")
+            titulo.innerText = `Categoria: ${categoria.area_interesse}`
+            cabecalho_categoria_expirada.appendChild(titulo)
 
-        total = categoria.tarefas.length
-        categoria.tarefas.forEach(tarefa => {
-            const titulo_tarefa = document.createElement("p");
-            titulo_tarefa.classList.add("titulo_tarefa")
-            titulo_tarefa.innerText = tarefa.nome;
-            lista_tarefa_expirado.appendChild(titulo_tarefa);
+            const objetivo = document.createElement("p")
+            objetivo.innerText = `Objetivo: ${categoria.objetivo}`
+            cabecalho_categoria_expirada.appendChild(objetivo)
 
-            if(tarefa.concluida){
-                completas ++
-                titulo_tarefa.classList.add("finalizado")
-            }
-        })
+            const totais_categoria_expirada = document.createElement("div")
+            totais_categoria_expirada.classList.add("totais_categoria_expirada")
 
-        const tot_tarefas = document.createElement("p")
-        tot_tarefas.innerText = `Tarefas cadastradas: ${total}`
-        totais_categoria_expirada.appendChild(tot_tarefas)
+            const lista_tarefa_expirado = document.createElement("div")
+            lista_tarefa_expirado.classList.add("lista_tarefa_expirado")
 
-        const tot_completas = document.createElement("p")
-        tot_completas.innerText = `Completas: ${completas}`
-        totais_categoria_expirada.appendChild(tot_completas)
+            total = categoria.tarefas.length
+            categoria.tarefas.forEach(tarefa => {
+                const titulo_tarefa = document.createElement("p");
+                titulo_tarefa.classList.add("titulo_tarefa")
+                titulo_tarefa.innerText = tarefa.nome;
+                lista_tarefa_expirado.appendChild(titulo_tarefa);
 
-        const tot_incompletas = document.createElement("p")
-        tot_incompletas.innerText = `Incompletas: ${total-completas}`
-        totais_categoria_expirada.appendChild(tot_incompletas)
+                if(tarefa.concluida){
+                    completas ++
+                    titulo_tarefa.classList.add("finalizado")
+                }
+            })
 
-        cabecalho_categoria_expirada.appendChild(totais_categoria_expirada)
-        card_categoria_expirada.appendChild(cabecalho_categoria_expirada)
-        card_categoria_expirada.appendChild(lista_tarefa_expirado)
-        container_historico.appendChild(card_categoria_expirada)
-    })   
+            const tot_tarefas = document.createElement("p")
+            tot_tarefas.innerText = `Tarefas cadastradas: ${total}`
+            totais_categoria_expirada.appendChild(tot_tarefas)
+
+            const tot_completas = document.createElement("p")
+            tot_completas.innerText = `Completas: ${completas}`
+            totais_categoria_expirada.appendChild(tot_completas)
+
+            const tot_incompletas = document.createElement("p")
+            tot_incompletas.innerText = `Incompletas: ${total-completas}`
+            totais_categoria_expirada.appendChild(tot_incompletas)
+
+            cabecalho_categoria_expirada.appendChild(totais_categoria_expirada)
+            card_categoria_expirada.appendChild(cabecalho_categoria_expirada)
+            card_categoria_expirada.appendChild(lista_tarefa_expirado)
+            container_historico.appendChild(card_categoria_expirada)
+        })   
+    }
+    
 }

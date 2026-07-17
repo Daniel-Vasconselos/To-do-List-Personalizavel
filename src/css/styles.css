@@ -219,18 +219,22 @@ button.btn_remover_categoria:hover > i{
     border-radius: 5px;
 }
 
-.titulo_tarefa.finalizado{
+.titulo_tarefa.finalizado,
+.legenda_tarefa_completa{
     background-color: #395169;
     color: #fff;
     text-decoration: line-through;
 }
 
-#id_btn_voltar_categoria{
-    margin: auto;
+.subtitulo_historico{
+    text-align: center;
+    margin: 20px 0px 5px 0px;
 }
+
 
 .card_categoria_expirada{
     background-color: darkgrey;
+    border: 2px solid black;
     padding: 10px;
     border-radius: 5px;
     margin-bottom: 20px;
@@ -247,7 +251,8 @@ button.btn_remover_categoria:hover > i{
 
 .totais_categoria_expirada{
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 40px;
 }
 
 .lista_tarefa_expirado{
@@ -258,5 +263,58 @@ button.btn_remover_categoria:hover > i{
     padding: 10px;
     background-color: #fff;
 }
+
+.legenda{
+    display: flex;
+    justify-content: center;
+}
+
+.container_legenda{
+    display: block;
+    padding: 10px;
+    width: fit-content;
+    margin-inline: auto;
+    text-align: center;
+    border: 2px solid black;
+    border-radius: 5px;
+    background-color: darkgrey;
+}
+
+.legenda p{
+    padding: 10px 10px 0px 10px;
+}
+
+.legenda div{
+    border: 2px solid black;
+    border-radius: 5px;
+    text-align: center;
+    margin: 5px;
+}
+
+.tarefa_completa,
+.tarefa_incompleta{
+    background-color: #fff;
+}
+
+.historico_vazio{
+    text-align: center;
+    font-size: 1.3em;
+    background-color: darkgrey;
+    border: 2px solid black;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.acoes_historico{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+
+
+    
+    
+
 
 
